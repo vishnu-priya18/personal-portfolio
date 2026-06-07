@@ -9,7 +9,7 @@ export default function HeroSection() {
   const sectionRef  = useRef<HTMLElement>(null);
 
   const [isPlaying, setIsPlaying] = useState(true);
-  const [isMuted,   setIsMuted]   = useState(true);
+  const [isMuted,   setIsMuted]   = useState(false);
   const [loaded,    setLoaded]    = useState(false);
 
   /* ─── Three.js Particle System ─────────────────────────── */
