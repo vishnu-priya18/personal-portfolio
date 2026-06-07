@@ -1,0 +1,8 @@
+portfolio-app/node_modules/
+portfolio-app/.next/
+portfolio-app/out/
+.DS_Store
+*.log
+verify_references.py
+check_audio.py
+search_video.py

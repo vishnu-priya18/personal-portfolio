@@ -1,0 +1,1320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Vishnu Priya - Biomedical Portfolio</title>
+    
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@300;400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom Style Sheet -->
+    <style>
+        :root {
+            --cyan: #00d4ff;
+            --orange: #ff6b35;
+            --purple: #a855f7;
+            --emerald: #10b981;
+            --blue-deep: #030b1a;
+            --blue-mid: #0a1628;
+            --blue-light: #0d2040;
+            --glass-bg: rgba(255, 255, 255, 0.04);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --glow-cyan: 0 0 25px rgba(0, 212, 255, 0.35);
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--blue-deep);
+            color: #ffffff;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .font-display {
+            font-family: 'Outfit', sans-serif;
+        }
+
+        .font-mono {
+            font-family: 'Space Mono', monospace;
+        }
+
+        /* Scrollbar */
+        ::-webkit-scrollbar {
+            width: 5px;
+        }
+        ::-webkit-scrollbar-track {
+            background: var(--blue-deep);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(to bottom, var(--cyan), var(--orange));
+            border-radius: 5px;
+        }
+
+        /* Glassmorphism */
+        .glass {
+            background: var(--glass-bg);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid var(--glass-border);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.4);
+        }
+
+        .glass-strong {
+            background: rgba(10, 22, 40, 0.8);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid rgba(0, 212, 255, 0.15);
+        }
+
+        /* Glow effects */
+        .glow-text-cyan {
+            text-shadow: 0 0 15px rgba(0, 212, 255, 0.5);
+        }
+
+        /* 3D Tilt Card */
+        .project-card {
+            transform-style: preserve-3d;
+            transform: perspective(1000px);
+            transition: transform 0.5s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+        .project-card:hover {
+            border-color: rgba(0, 212, 255, 0.3);
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5), 0 0 30px rgba(0, 212, 255, 0.15);
+        }
+
+        /* Animation */
+        @keyframes pulse-glow {
+            0%, 100% { box-shadow: 0 0 15px rgba(0, 212, 255, 0.2); }
+            50% { box-shadow: 0 0 35px rgba(0, 212, 255, 0.55); }
+        }
+        .pulse-glow {
+            animation: pulse-glow 2.5s ease-in-out infinite;
+        }
+
+        /* Timeline vertical line */
+        .timeline-line {
+            background: linear-gradient(to bottom, var(--cyan), var(--purple), transparent);
+        }
+
+        /* Active Tab in Certificates */
+        .tab-btn.active {
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.2), rgba(0, 212, 255, 0.05));
+            border-color: rgba(0, 212, 255, 0.4);
+            color: var(--cyan);
+            box-shadow: 0 0 15px rgba(0, 212, 255, 0.15);
+        }
+
+        /* Lightbox modal overlay */
+        .lightbox-modal {
+            background: rgba(3, 11, 26, 0.95);
+            backdrop-filter: blur(10px);
+        }
+    </style>
+</head>
+<body class="relative">
+
+    <!-- background canvas for particle simulation -->
+    <canvas id="particle-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-0 opacity-40"></canvas>
+
+    <!-- Header / Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 transition-all duration-300 py-5" id="navbar">
+        <div class="max-w-7xl mx-auto px-6 flex items-center justify-between">
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-9 h-9 rounded-full flex items-center justify-center text-sm font-bold text-white bg-gradient-to-br from-[#00d4ff] to-[#004466] pulse-glow">
+                    VP
+                </div>
+                <span class="font-display font-bold text-lg tracking-wide hidden sm:block">
+                    Vishnu<span class="text-[#00d4ff]">priya</span>
+                </span>
+            </a>
+            
+            <!-- Links (Desktop) -->
+            <ul class="hidden md:flex items-center gap-1">
+                <li><a href="#about" class="px-4 py-2 rounded-full text-sm font-medium text-white/60 hover:text-white transition-all">About</a></li>
+                <li><a href="#education" class="px-4 py-2 rounded-full text-sm font-medium text-white/60 hover:text-white transition-all">Education</a></li>
+                <li><a href="#skills" class="px-4 py-2 rounded-full text-sm font-medium text-white/60 hover:text-white transition-all">Skills</a></li>
+                <li><a href="#internship" class="px-4 py-2 rounded-full text-sm font-medium text-white/60 hover:text-white transition-all">Internship</a></li>
+                <li><a href="#certificates" class="px-4 py-2 rounded-full text-sm font-medium text-white/60 hover:text-white transition-all">Certifications</a></li>
+                <li><a href="#projects" class="px-4 py-2 rounded-full text-sm font-medium text-white/60 hover:text-white transition-all">Projects</a></li>
+                <li><a href="#achievements" class="px-4 py-2 rounded-full text-sm font-medium text-white/60 hover:text-white transition-all">Achievements</a></li>
+                <li><a href="#resume" class="px-4 py-2 rounded-full text-sm font-medium text-white/60 hover:text-white transition-all">Resume</a></li>
+                <li><a href="#contact" class="px-4 py-2 rounded-full text-sm font-medium text-white/60 hover:text-white transition-all">Contact</a></li>
+            </ul>
+
+            <!-- Download Button (Desktop) -->
+            <div class="hidden md:flex items-center gap-3">
+                <a href="./Vishnu_Priya_Resume.pdf" download class="glass px-4 py-2 rounded-full text-xs font-semibold text-white/80 hover:text-white hover:border-cyan/40 hover:bg-white/5 transition-all">
+                    Download Resume
+                </a>
+            </div>
+
+            <!-- Hamburger Button (Mobile) -->
+            <button class="md:hidden flex flex-col gap-1.5 p-2 text-white/80 hover:text-white" id="menu-btn" aria-label="Toggle menu">
+                <span class="w-6 h-0.5 bg-current transition-all" id="bar1"></span>
+                <span class="w-6 h-0.5 bg-current transition-all" id="bar2"></span>
+                <span class="w-6 h-0.5 bg-current transition-all" id="bar3"></span>
+            </button>
+        </div>
+
+        <!-- Mobile Drawer -->
+        <div class="hidden md:hidden absolute top-full left-0 right-0 bg-slate-950/95 backdrop-blur-2xl border-b border-white/10 py-6 px-6" id="mobile-menu">
+            <ul class="flex flex-col gap-4 text-sm font-medium">
+                <li><a href="#about" class="block text-white/70 hover:text-white py-1">About</a></li>
+                <li><a href="#education" class="block text-white/70 hover:text-white py-1">Education</a></li>
+                <li><a href="#skills" class="block text-white/70 hover:text-white py-1">Skills</a></li>
+                <li><a href="#internship" class="block text-white/70 hover:text-white py-1">Internship</a></li>
+                <li><a href="#certificates" class="block text-white/70 hover:text-white py-1">Certifications</a></li>
+                <li><a href="#projects" class="block text-white/70 hover:text-white py-1">Projects</a></li>
+                <li><a href="#achievements" class="block text-white/70 hover:text-white py-1">Achievements</a></li>
+                <li><a href="#resume" class="block text-white/70 hover:text-white py-1">Resume</a></li>
+                <li><a href="#contact" class="block text-white/70 hover:text-white py-1">Contact</a></li>
+                <li class="border-t border-white/10 pt-4">
+                    <a href="./Vishnu_Priya_Resume.pdf" download class="block text-center bg-cyan-500 text-slate-950 font-bold py-2 rounded-full">
+                        Download Resume
+                    </a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="hero" class="relative min-h-screen flex flex-col md:flex-row z-10">
+        <!-- Left Pane - Video Background -->
+        <div class="w-full md:w-1/2 h-[50vh] md:h-screen relative overflow-hidden bg-black flex items-center justify-center cursor-pointer" onclick="toggleMuteHeroVideo()">
+            <video id="hero-video" class="w-full h-full object-cover opacity-85" playsinline poster="./profile.jpg">
+                <source src="./Intro video/intro video.mp4" type="video/mp4">
+            </video>
+            <!-- Overlay gradient -->
+            <div class="absolute inset-0 bg-gradient-to-t from-slate-950/70 via-transparent to-slate-950/50 pointer-events-none"></div>
+
+            <!-- Video Controls (confined inside the left video pane) -->
+            <div class="absolute bottom-6 right-6 z-30 flex gap-2.5" onclick="event.stopPropagation()">
+                <!-- Play/Pause Button -->
+                <button id="video-play-btn" onclick="togglePlayHeroVideo()" class="w-9 h-9 rounded-full bg-black/40 backdrop-blur-md border border-white/10 hover:border-cyan-500/50 hover:bg-white/5 hover:shadow-[0_0_10px_rgba(0,212,255,0.2)] transition-all flex items-center justify-center text-white" aria-label="Pause Video">
+                    <svg id="play-icon" class="w-3.5 h-3.5 hidden" fill="currentColor" viewBox="0 0 24 24">
+                        <polygon points="5,3 19,12 5,21"/>
+                    </svg>
+                    <svg id="pause-icon" class="w-3.5 h-3.5" fill="currentColor" viewBox="0 0 24 24">
+                        <rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/>
+                    </svg>
+                </button>
+                <!-- Mute/Unmute Button -->
+                <button id="video-mute-btn" onclick="toggleMuteHeroVideo()" class="w-9 h-9 rounded-full bg-black/40 backdrop-blur-md border border-white/10 hover:border-cyan-500/50 hover:bg-white/5 hover:shadow-[0_0_10px_rgba(0,212,255,0.2)] transition-all flex items-center justify-center text-white animate-pulse" aria-label="Unmute Video">
+                    <!-- Muted Icon -->
+                    <svg id="mute-icon" class="w-3.5 h-3.5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                        <polygon points="11,5 6,9 2,9 2,15 6,15 11,19"/><line x1="23" y1="9" x2="17" y2="15"/><line x1="17" y1="9" x2="23" y2="15"/>
+                    </svg>
+                    <!-- Unmuted Icon -->
+                    <svg id="unmute-icon" class="w-3.5 h-3.5 text-cyan-400 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" stroke-width="2.5">
+                        <polygon points="11,5 6,9 2,9 2,15 6,15 11,19"/><path d="M15.54 8.46a5 5 0 010 7.07"/><path d="M19.07 4.93a10 10 0 010 14.14"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+
+        <!-- Right Pane - Bio info -->
+        <div class="w-full md:w-1/2 min-h-[50vh] md:h-screen relative bg-slate-950/90 flex items-center px-6 md:px-12 py-16">
+            <div class="max-w-lg w-full mx-auto relative z-10">
+                
+                <!-- Avatar row -->
+                <div class="flex items-center gap-4 mb-6">
+                    <div class="w-20 h-20 rounded-full border-2 border-cyan-500/40 relative overflow-hidden flex-shrink-0 shadow-lg shadow-cyan-500/20">
+                        <img src="./profile.jpg" alt="Vishnu Priya" class="w-full h-full object-cover">
+                    </div>
+                    <div>
+                        <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-[10px] font-semibold tracking-widest bg-cyan-500/10 border border-cyan-500/20 text-cyan uppercase font-mono">
+                            <span class="w-1.5 h-1.5 rounded-full bg-cyan-400 animate-ping"></span>
+                            Biomedical Engineering
+                        </span>
+                        <p class="text-white/50 text-xs font-mono mt-1">Sona College of Technology</p>
+                    </div>
+                </div>
+
+                <h1 class="text-4xl md:text-5xl font-display font-bold leading-tight mb-4">
+                    Vishnu <span class="bg-gradient-to-r from-cyan-400 via-sky-300 to-orange-400 bg-clip-text text-transparent">Priya</span>
+                </h1>
+                
+                <p class="text-orange-400 text-xs md:text-sm tracking-wider font-mono font-semibold uppercase mb-4">
+                    Biomedical Engineering Student | AI in Healthcare Enthusiast
+                </p>
+                
+                <p class="text-white/80 text-sm md:text-base leading-relaxed mb-8">
+                    Hello, I am Vishnu Priya, a Biomedical Engineering student passionate about healthcare technology, artificial intelligence in medicine, biomedical instrumentation, research, and innovation. Welcome to my portfolio website.
+                </p>
+
+                <!-- Actions -->
+                <div class="flex flex-wrap gap-3">
+                    <a href="#about" class="px-6 py-3 rounded-full text-xs md:text-sm font-bold text-slate-950 bg-gradient-to-r from-cyan-400 to-teal-400 hover:scale-105 shadow-lg shadow-cyan-500/30 transition-all">
+                        View Portfolio
+                    </a>
+                    <a href="./Vishnu_Priya_Resume.pdf" download class="glass px-6 py-3 rounded-full text-xs md:text-sm font-medium text-white/80 hover:text-white hover:border-cyan/40 hover:bg-white/5 transition-all">
+                        Download Resume
+                    </a>
+                    <a href="#contact" class="px-6 py-3 rounded-full text-xs md:text-sm font-medium border border-cyan-500/30 text-cyan hover:bg-cyan-500/5 transition-all">
+                        Contact Me
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Me Section -->
+    <section id="about" class="py-24 relative z-10 px-6 max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <span class="text-xs font-mono tracking-widest text-cyan uppercase block mb-2">01 — About Me</span>
+            <h2 class="text-3xl md:text-4xl font-display font-bold">Bridging <span class="text-cyan">Medicine</span> & <span class="text-orange-400">Technology</span></h2>
+            <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-cyan-500 to-transparent mx-auto mt-6"></div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center mb-16">
+            <div class="relative max-w-sm mx-auto lg:mx-0">
+                <div class="absolute inset-0 bg-gradient-to-tr from-cyan-500 to-purple-500 rounded-3xl blur-xl opacity-20 -z-10"></div>
+                <div class="rounded-3xl border border-cyan-500/20 overflow-hidden shadow-2xl shadow-black/80">
+                    <img src="./profile.jpg" alt="Vishnu Priya Profile" class="w-full object-cover aspect-[4/5]">
+                </div>
+            </div>
+            
+            <div class="space-y-6">
+                <p class="text-white/80 text-lg leading-relaxed">
+                    I am <strong class="text-white">Vishnu Priya</strong>, a Biomedical Engineering student at Sona College of Technology, driven by a deep curiosity to apply Artificial Intelligence (AI) and Internet of Things (IoT) engineering principles to modern medical challenges.
+                </p>
+                <p class="text-white/60 text-base leading-relaxed">
+                    My core technical objective is to design smart biomedical devices, process patient physiological data streams (such as ECG and heart sounds), and develop computer-vision-based diagnostics that help doctors provide faster, more accurate clinical insights.
+                </p>
+                
+                <!-- Highlights Grid -->
+                <div class="grid grid-cols-2 gap-4 pt-4">
+                    <div class="glass p-4 rounded-xl border border-white/5">
+                        <span class="text-2xl block mb-2">🧠</span>
+                        <h4 class="font-bold text-cyan text-sm mb-1">AI in Healthcare</h4>
+                        <p class="text-white/50 text-[11px] leading-snug">Neural network diagnostics and medical machine learning applications.</p>
+                    </div>
+                    <div class="glass p-4 rounded-xl border border-white/5">
+                        <span class="text-2xl block mb-2">🔬</span>
+                        <h4 class="font-bold text-purple-400 text-sm mb-1">Smart Medical Devices</h4>
+                        <p class="text-white/50 text-[11px] leading-snug">IoT-based physiological patient parameter trackers and wearables.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Education Section -->
+    <section id="education" class="py-24 bg-slate-950/40 relative z-10 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-20">
+                <span class="text-xs font-mono tracking-widest text-cyan uppercase block mb-2">02 — Education</span>
+                <h2 class="text-3xl md:text-4xl font-display font-bold">Academic <span class="text-cyan">Journey</span></h2>
+                <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-cyan-500 to-transparent mx-auto mt-6"></div>
+            </div>
+
+            <!-- Timeline -->
+            <div class="relative max-w-3xl mx-auto">
+                <div class="absolute left-5 top-0 bottom-0 w-0.5 timeline-line"></div>
+
+                <div class="space-y-12 pl-16 relative">
+                    <!-- Sona College -->
+                    <div class="relative group">
+                        <div class="absolute -left-16 top-1 w-8 h-8 rounded-full border border-cyan-500 bg-slate-950 flex items-center justify-center text-sm shadow shadow-cyan-500/50 z-10">
+                            🎓
+                        </div>
+                        <div class="glass p-6 rounded-2xl border border-cyan-500/10 group-hover:border-cyan-500/30 transition-all">
+                            <div class="flex flex-wrap justify-between items-start mb-2 gap-2">
+                                <div>
+                                    <h3 class="font-bold text-lg text-cyan font-display">B.E. Biomedical Engineering</h3>
+                                    <p class="text-white/80 text-sm">Sona College of Technology</p>
+                                </div>
+                                <span class="px-3 py-1 rounded-full text-[10px] font-mono text-cyan bg-cyan-500/10 border border-cyan-500/20">
+                                    2024 – 2028 | Salem, TN
+                                </span>
+                            </div>
+                            <p class="text-white/50 text-xs leading-relaxed">
+                                Currently pursuing B.E. in Biomedical Engineering, specializing in instrumentation, computer programming, sensors interfacing, and machine learning models for clinical trials.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Saraswati School -->
+                    <div class="relative group">
+                        <div class="absolute -left-16 top-1 w-8 h-8 rounded-full border border-orange-500 bg-slate-950 flex items-center justify-center text-sm shadow shadow-orange-500/50 z-10">
+                            📚
+                        </div>
+                        <div class="glass p-6 rounded-2xl border border-orange-500/10 group-hover:border-orange-500/30 transition-all">
+                            <div class="flex flex-wrap justify-between items-start mb-2 gap-2">
+                                <div>
+                                    <h3 class="font-bold text-lg text-orange-400 font-display">12th Grade (HSC)</h3>
+                                    <p class="text-white/80 text-sm">Saraswati Matric Higher Secondary School</p>
+                                </div>
+                                <div class="flex flex-col items-end gap-1.5">
+                                    <span class="px-3 py-1 rounded-full text-[10px] font-mono text-orange-400 bg-orange-500/10 border border-orange-500/20">
+                                        Year: 2022
+                                    </span>
+                                    <span class="px-2 py-0.5 rounded-full text-[10px] font-bold text-emerald-400 bg-emerald-500/10 border border-emerald-500/20">
+                                        Score: 74.6%
+                                    </span>
+                                </div>
+                            </div>
+                            <p class="text-white/50 text-xs leading-relaxed">
+                                Completed high school education with a focus on Mathematics, Physics, Chemistry, and Biology.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Govt Girls School -->
+                    <div class="relative group">
+                        <div class="absolute -left-16 top-1 w-8 h-8 rounded-full border border-purple-500 bg-slate-950 flex items-center justify-center text-sm shadow shadow-purple-500/50 z-10">
+                            🏫
+                        </div>
+                        <div class="glass p-6 rounded-2xl border border-purple-500/10 group-hover:border-purple-500/30 transition-all">
+                            <div class="flex flex-wrap justify-between items-start mb-2 gap-2">
+                                <div>
+                                    <h3 class="font-bold text-lg text-purple-400 font-display">10th Grade (SSLC)</h3>
+                                    <p class="text-white/80 text-sm">Government Girls Higher Secondary School, Belur</p>
+                                </div>
+                                <div class="flex flex-col items-end gap-1.5">
+                                    <span class="px-3 py-1 rounded-full text-[10px] font-mono text-purple-400 bg-purple-500/10 border border-purple-500/20">
+                                        Year: 2021
+                                    </span>
+                                    <span class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold text-purple-300 bg-purple-500/10 border border-purple-500/20">
+                                        🦠 Corona Batch
+                                    </span>
+                                </div>
+                            </div>
+                            <p class="text-white/50 text-xs leading-relaxed">
+                                Completed secondary board exams during a challenging global environment.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Skills Section -->
+    <section id="skills" class="py-24 relative z-10 px-6 max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <span class="text-xs font-mono tracking-widest text-cyan uppercase block mb-2">03 — Skills</span>
+            <h2 class="text-3xl md:text-4xl font-display font-bold">Technical <span class="text-orange-400">Arsenal</span></h2>
+            <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-cyan-500 to-transparent mx-auto mt-6"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-4xl mx-auto mb-16">
+            <!-- Left Grid (Skill bars) -->
+            <div class="space-y-6">
+                <!-- Skill 1 -->
+                <div class="glass p-5 rounded-2xl border border-emerald-500/10">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-sm font-semibold text-white/90">Biomedical Instrumentation</span>
+                        <span class="text-sm font-mono text-emerald-400 font-bold">88%</span>
+                    </div>
+                    <div class="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                        <div class="h-full bg-emerald-500 rounded-full shadow-[0_0_8px_#10b981]" style="width: 88%;"></div>
+                    </div>
+                </div>
+
+                <!-- Skill 2 -->
+                <div class="glass p-5 rounded-2xl border border-purple-500/10">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-sm font-semibold text-white/90">Medical Electronics</span>
+                        <span class="text-sm font-mono text-purple-400 font-bold">84%</span>
+                    </div>
+                    <div class="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                        <div class="h-full bg-purple-500 rounded-full shadow-[0_0_8px_#a855f7]" style="width: 84%;"></div>
+                    </div>
+                </div>
+
+                <!-- Skill 3 -->
+                <div class="glass p-5 rounded-2xl border border-cyan-500/10">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-sm font-semibold text-white/90">Healthcare Technology & AI</span>
+                        <span class="text-sm font-mono text-cyan font-bold">87%</span>
+                    </div>
+                    <div class="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                        <div class="h-full bg-cyan-500 rounded-full shadow-[0_0_8px_#00d4ff]" style="width: 87%;"></div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Grid (Skill bars) -->
+            <div class="space-y-6">
+                <!-- Skill 4 -->
+                <div class="glass p-5 rounded-2xl border border-blue-500/10">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-sm font-semibold text-white/90">Medical Coding & Programming</span>
+                        <span class="text-sm font-mono text-blue-400 font-bold">78%</span>
+                    </div>
+                    <div class="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                        <div class="h-full bg-blue-500 rounded-full shadow-[0_0_8px_#3b82f6]" style="width: 78%;"></div>
+                    </div>
+                </div>
+
+                <!-- Skill 5 -->
+                <div class="glass p-5 rounded-2xl border border-orange-500/10">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-sm font-semibold text-white/90">Technical Presentations</span>
+                        <span class="text-sm font-mono text-orange-400 font-bold">90%</span>
+                    </div>
+                    <div class="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                        <div class="h-full bg-orange-500 rounded-full shadow-[0_0_8px_#ff6b35]" style="width: 90%;"></div>
+                    </div>
+                </div>
+
+                <!-- Skill 6 -->
+                <div class="glass p-5 rounded-2xl border border-pink-500/10">
+                    <div class="flex justify-between items-center mb-3">
+                        <span class="text-sm font-semibold text-white/90">Canva & Research Writing</span>
+                        <span class="text-sm font-mono text-pink-400 font-bold">85%</span>
+                    </div>
+                    <div class="w-full h-1.5 bg-white/5 rounded-full overflow-hidden">
+                        <div class="h-full bg-pink-500 rounded-full shadow-[0_0_8px_#ec4899]" style="width: 85%;"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Extra Tools list -->
+        <div class="max-w-3xl mx-auto text-center">
+            <span class="text-xs uppercase font-mono tracking-widest text-white/40 block mb-6">Tools & Software</span>
+            <div class="flex flex-wrap justify-center gap-2.5">
+                {['Arduino', 'ESP32', 'Raspberry Pi', 'Python', 'C Programming', 'C++', 'HTML', 'MATLAB', 'TensorFlow', 'OpenCV', 'Canva', 'Microsoft Office', 'Healthcare Technology'].map(tool => (
+                    <span key={tool} class="px-4 py-2 rounded-full text-xs text-white/60 bg-white/5 border border-white/10 hover:border-cyan/45 hover:text-white transition-all cursor-default">
+                        {tool}
+                    </span>
+                ))}
+            </div>
+        </div>
+    </section>
+
+    <!-- Internship Section -->
+    <section id="internship" class="py-24 bg-slate-950/40 relative z-10 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-xs font-mono tracking-widest text-cyan uppercase block mb-2">04 — Experience</span>
+                <h2 class="text-3xl md:text-4xl font-display font-bold">Real World <span class="text-emerald-400">Experience</span></h2>
+                <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-emerald-500 to-transparent mx-auto mt-6"></div>
+            </div>
+
+            <!-- Internship Hero Card -->
+            <div class="glass-strong max-w-4xl mx-auto rounded-3xl p-8 md:p-12 mb-12 border border-emerald-500/25">
+                <div class="flex flex-col md:flex-row items-start md:items-center gap-8">
+                    <!-- Icon -->
+                    <div class="w-20 h-20 rounded-2xl bg-gradient-to-br from-emerald-500/20 to-cyan-500/10 border border-emerald-500/30 shadow-lg shadow-emerald-500/10 flex items-center justify-center text-4xl flex-shrink-0">
+                        🏥
+                    </div>
+                    <!-- Details -->
+                    <div>
+                        <div class="flex flex-wrap items-center gap-3 mb-2">
+                            <h3 class="font-display font-bold text-2xl bg-gradient-to-r from-emerald-400 to-cyan-400 bg-clip-text text-transparent">Medsby</h3>
+                            <span class="px-3 py-0.5 rounded-full text-[10px] font-bold text-emerald-400 bg-emerald-500/15 border border-emerald-500/35 uppercase font-mono">
+                                ✓ Completed
+                            </span>
+                        </div>
+                        <p class="text-white/40 text-xs font-mono mb-4">Healthcare Technology Intern</p>
+                        <p class="text-white/70 text-sm md:text-base leading-relaxed">
+                            Acquired practical clinical engineering exposure: worked hands-on with physiological patient monitors and hospital diagnostic systems, studying biological signals interfacing and diagnostics software dashboards.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bullet Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+                <div class="glass p-5 rounded-2xl border border-emerald-500/10">
+                    <span class="text-xl block mb-2">🔬</span>
+                    <h4 class="font-bold text-white text-sm mb-1.5 font-display">Diagnostic Systems</h4>
+                    <p class="text-white/50 text-[11px] leading-relaxed">Hands-on calibration and calibration assessment of diagnostic monitoring sensors.</p>
+                </div>
+                <div class="glass p-5 rounded-2xl border border-emerald-500/10">
+                    <span class="text-xl block mb-2">💻</span>
+                    <h4 class="font-bold text-white text-sm mb-1.5 font-display">Clinical Workflows</h4>
+                    <p class="text-white/50 text-[11px] leading-relaxed">Analysis of patient parameter signal streaming from sensors to web databases.</p>
+                </div>
+                <div class="glass p-5 rounded-2xl border border-emerald-500/10">
+                    <span class="text-xl block mb-2">⚡</span>
+                    <h4 class="font-bold text-white text-sm mb-1.5 font-display">Embedded Prototyping</h4>
+                    <p class="text-white/50 text-[11px] leading-relaxed">Collaborated on design schematics for portable microcontroller-based sensors.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Certifications Section -->
+    <section id="certificates" class="py-24 relative z-10 px-6 max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <span class="text-xs font-mono tracking-widest text-cyan uppercase block mb-2">05 — Certifications</span>
+            <h2 class="text-3xl md:text-4xl font-display font-bold">Credentials & <span class="text-[#f59e0b]">Recognition</span></h2>
+            <p class="text-white/40 text-xs md:text-sm mt-3">Click on any certificate to view the full resolution image</p>
+            <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-[#f59e0b] to-transparent mx-auto mt-6"></div>
+        </div>
+
+        <!-- Tabs Container -->
+        <div class="flex justify-center flex-wrap gap-2.5 mb-10" id="tabs">
+            <button class="tab-btn active px-5 py-2.5 rounded-full text-xs font-bold border border-white/10 text-white/50 hover:text-white transition-all duration-300" onclick="switchTab('nptel')">
+                🏛️ NPTEL (2)
+            </button>
+            <button class="tab-btn px-5 py-2.5 rounded-full text-xs font-bold border border-white/10 text-white/50 hover:text-white transition-all duration-300" onclick="switchTab('course')">
+                📜 Courses (4)
+            </button>
+            <button class="tab-btn px-5 py-2.5 rounded-full text-xs font-bold border border-white/10 text-white/50 hover:text-white transition-all duration-300" onclick="switchTab('achievement')">
+                🏅 Achievements (15)
+            </button>
+        </div>
+
+        <!-- ── TAB CONTENT: NPTEL ── -->
+        <div id="tab-nptel" class="tab-content grid grid-cols-1 md:grid-cols-2 gap-6 max-w-3xl mx-auto">
+            <!-- Cert 1 -->
+            <div class="glass rounded-2xl overflow-hidden hover:scale-[1.01] transition-all cursor-pointer" onclick="openLightbox('./NPTEL Certificate/NPTEL Certificate.jpg')">
+                <div class="h-44 relative bg-slate-900">
+                    <img src="./NPTEL Certificate/NPTEL Certificate.jpg" alt="Design Thinking NPTEL" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 to-transparent"></div>
+                    <span class="absolute top-3 right-3 px-3 py-1 rounded-full text-[10px] font-bold text-silver bg-slate-400/20 border border-slate-400/30">
+                        🥈 Silver + Elite
+                    </span>
+                </div>
+                <div class="p-5">
+                    <h4 class="font-display font-semibold text-white/90 mb-1">Design Thinking</h4>
+                    <p class="text-white/40 text-[11px] mb-3">NPTEL — IIT</p>
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="text-white/30">Score</span>
+                        <span class="font-bold text-cyan">78%</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Cert 2 -->
+            <div class="glass rounded-2xl overflow-hidden hover:scale-[1.01] transition-all cursor-pointer" onclick="openLightbox('./NPTEL Certificate/NPTEL Certificate.jpg')">
+                <div class="h-44 relative bg-slate-900">
+                    <img src="./NPTEL Certificate/NPTEL Certificate.jpg" alt="Cardiovascular Mechanics NPTEL" class="w-full h-full object-cover">
+                    <div class="absolute inset-0 bg-gradient-to-t from-slate-950 to-transparent"></div>
+                    <span class="absolute top-3 right-3 px-3 py-1 rounded-full text-[10px] font-bold text-yellow-400 bg-yellow-400/10 border border-yellow-400/30">
+                        ⭐ Elite
+                    </span>
+                </div>
+                <div class="p-5">
+                    <h4 class="font-display font-semibold text-white/90 mb-1">Introduction to Cardiovascular Mechanics</h4>
+                    <p class="text-white/40 text-[11px] mb-3">NPTEL — IIT</p>
+                    <div class="flex justify-between items-center text-xs">
+                        <span class="text-white/30">Score</span>
+                        <span class="font-bold text-cyan">68%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── TAB CONTENT: COURSES ── -->
+        <div id="tab-course" class="tab-content hidden grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            <!-- Course 1 -->
+            <div class="glass rounded-2xl overflow-hidden hover:-translate-y-1 transition-all cursor-pointer" onclick="openLightbox('./Course Completion Certificate/CC-IMIC24101428-Vishnu priya. S-Course on Software Development Using Python_page-0001.jpg')">
+                <div class="h-36 relative">
+                    <img src="./Course Completion Certificate/CC-IMIC24101428-Vishnu priya. S-Course on Software Development Using Python_page-0001.jpg" alt="Software Development Python" class="w-full h-full object-cover">
+                    <span class="absolute top-2 left-2 px-2 py-0.5 rounded text-[9px] font-mono text-cyan bg-cyan-500/20 border border-cyan-500/30 uppercase">Python</span>
+                </div>
+                <div class="p-4">
+                    <h4 class="font-display font-semibold text-xs text-white/80 leading-snug mb-1">Software Development Using Python</h4>
+                    <p class="text-white/35 text-[10px]">IMIC Training Centre</p>
+                </div>
+            </div>
+
+            <!-- Course 2 -->
+            <div class="glass rounded-2xl overflow-hidden hover:-translate-y-1 transition-all cursor-pointer" onclick="openLightbox('./Course Completion Certificate/FutureSkills_20260328_055205_0000.png')">
+                <div class="h-36 relative">
+                    <img src="./Course Completion Certificate/FutureSkills_20260328_055205_0000.png" alt="Digital Skills" class="w-full h-full object-cover">
+                    <span class="absolute top-2 left-2 px-2 py-0.5 rounded text-[9px] font-mono text-cyan bg-cyan-500/20 border border-cyan-500/30 uppercase">Digital</span>
+                </div>
+                <div class="p-4">
+                    <h4 class="font-display font-semibold text-xs text-white/80 leading-snug mb-1">Digital Skills & Python Basics</h4>
+                    <p class="text-white/35 text-[10px]">FutureSkills Prime</p>
+                </div>
+            </div>
+
+            <!-- Course 3 -->
+            <div class="glass rounded-2xl overflow-hidden hover:-translate-y-1 transition-all cursor-pointer" onclick="openLightbox('./Course Completion Certificate/FutureSkills_20260328_055206_0001.png')">
+                <div class="h-36 relative">
+                    <img src="./Course Completion Certificate/FutureSkills_20260328_055206_0001.png" alt="Python Course" class="w-full h-full object-cover">
+                    <span class="absolute top-2 left-2 px-2 py-0.5 rounded text-[9px] font-mono text-cyan bg-cyan-500/20 border border-cyan-500/30 uppercase">Coding</span>
+                </div>
+                <div class="p-4">
+                    <h4 class="font-display font-semibold text-xs text-white/80 leading-snug mb-1">Python Basics Certification</h4>
+                    <p class="text-white/35 text-[10px]">FutureSkills Prime</p>
+                </div>
+            </div>
+
+            <!-- Course 4 -->
+            <div class="glass rounded-2xl overflow-hidden hover:-translate-y-1 transition-all cursor-pointer" onclick="openLightbox('./Course Completion Certificate/IMG_20260329_074817.jpg')">
+                <div class="h-36 relative">
+                    <img src="./Course Completion Certificate/IMG_20260329_074817.jpg" alt="Technical Certificate" class="w-full h-full object-cover">
+                    <span class="absolute top-2 left-2 px-2 py-0.5 rounded text-[9px] font-mono text-cyan bg-cyan-500/20 border border-cyan-500/30 uppercase">Technical</span>
+                </div>
+                <div class="p-4">
+                    <h4 class="font-display font-semibold text-xs text-white/80 leading-snug mb-1">Online Course Completion</h4>
+                    <p class="text-white/35 text-[10px]">Online Learning Platform</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ── TAB CONTENT: ACHIEVEMENTS ── -->
+        <div id="tab-achievement" class="tab-content hidden grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+            <!-- Loop through achievement images -->
+            <div class="glass aspect-[3/4] relative overflow-hidden group rounded-xl cursor-pointer hover:scale-[1.02] transition-all" onclick="openLightbox('./Achievement Certificate/8122914088_cert.jpg')">
+                <img src="./Achievement Certificate/8122914088_cert.jpg" alt="Achievement 1" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-slate-950/70 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center p-2 text-center text-[10px]">
+                    Academic Excellence
+                </div>
+            </div>
+            
+            <div class="glass aspect-[3/4] relative overflow-hidden group rounded-xl cursor-pointer hover:scale-[1.02] transition-all" onclick="openLightbox('./Achievement Certificate/VISHNU PRIYA S.png')">
+                <img src="./Achievement Certificate/VISHNU PRIYA S.png" alt="Achievement 2" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-slate-950/70 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center p-2 text-center text-[10px]">
+                    Vishnu Priya Certificate
+                </div>
+            </div>
+
+            <div class="glass aspect-[3/4] relative overflow-hidden group rounded-xl cursor-pointer hover:scale-[1.02] transition-all" onclick="openLightbox('./Achievement Certificate/WhatsApp Image 2026-05-24 at 10.40.50 AM.jpeg')">
+                <img src="./Achievement Certificate/WhatsApp Image 2026-05-24 at 10.40.50 AM.jpeg" alt="Event 1" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-slate-950/70 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center p-2 text-center text-[10px]">
+                    College Event Certification
+                </div>
+            </div>
+
+            <div class="glass aspect-[3/4] relative overflow-hidden group rounded-xl cursor-pointer hover:scale-[1.02] transition-all" onclick="openLightbox('./Achievement Certificate/WhatsApp Image 2026-05-24 at 10.40.51 AM.jpeg')">
+                <img src="./Achievement Certificate/WhatsApp Image 2026-05-24 at 10.40.51 AM.jpeg" alt="Event 2" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-slate-950/70 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center p-2 text-center text-[10px]">
+                    Symposium Coordinator
+                </div>
+            </div>
+
+            <!-- Loop for 11 event images -->
+            <div class="glass aspect-[3/4] relative overflow-hidden group rounded-xl cursor-pointer hover:scale-[1.02] transition-all" onclick="openLightbox('./Achievement Certificate/IMG_20260531_161113.jpg')">
+                <img src="./Achievement Certificate/IMG_20260531_161113.jpg" alt="Event" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-slate-950/70 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center p-2 text-center text-[10px]">Workshop Presentation</div>
+            </div>
+            <div class="glass aspect-[3/4] relative overflow-hidden group rounded-xl cursor-pointer hover:scale-[1.02] transition-all" onclick="openLightbox('./Achievement Certificate/IMG_20260531_161135.jpg')">
+                <img src="./Achievement Certificate/IMG_20260531_161135.jpg" alt="Event" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-slate-950/70 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center p-2 text-center text-[10px]">Technical Event</div>
+            </div>
+            <div class="glass aspect-[3/4] relative overflow-hidden group rounded-xl cursor-pointer hover:scale-[1.02] transition-all" onclick="openLightbox('./Achievement Certificate/IMG_20260531_161153.jpg')">
+                <img src="./Achievement Certificate/IMG_20260531_161153.jpg" alt="Event" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-slate-950/70 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center p-2 text-center text-[10px]">Technical Seminar</div>
+            </div>
+            <div class="glass aspect-[3/4] relative overflow-hidden group rounded-xl cursor-pointer hover:scale-[1.02] transition-all" onclick="openLightbox('./Achievement Certificate/IMG_20260531_161207.jpg')">
+                <img src="./Achievement Certificate/IMG_20260531_161207.jpg" alt="Event" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-slate-950/70 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center p-2 text-center text-[10px]">Medical Coding Seminar</div>
+            </div>
+            <div class="glass aspect-[3/4] relative overflow-hidden group rounded-xl cursor-pointer hover:scale-[1.02] transition-all" onclick="openLightbox('./Achievement Certificate/IMG_20260531_161221.jpg')">
+                <img src="./Achievement Certificate/IMG_20260531_161221.jpg" alt="Event" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-slate-950/70 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center p-2 text-center text-[10px]">Hackathon Delegate</div>
+            </div>
+            <div class="glass aspect-[3/4] relative overflow-hidden group rounded-xl cursor-pointer hover:scale-[1.02] transition-all" onclick="openLightbox('./Achievement Certificate/IMG_20260531_161241.jpg')">
+                <img src="./Achievement Certificate/IMG_20260531_161241.jpg" alt="Event" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-slate-950/70 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center p-2 text-center text-[10px]">Biomedical Biosensors</div>
+            </div>
+            <div class="glass aspect-[3/4] relative overflow-hidden group rounded-xl cursor-pointer hover:scale-[1.02] transition-all" onclick="openLightbox('./Achievement Certificate/IMG_20260531_161301.jpg')">
+                <img src="./Achievement Certificate/IMG_20260531_161301.jpg" alt="Event" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-slate-950/70 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center p-2 text-center text-[10px]">Clinical Device Training</div>
+            </div>
+            <div class="glass aspect-[3/4] relative overflow-hidden group rounded-xl cursor-pointer hover:scale-[1.02] transition-all" onclick="openLightbox('./Achievement Certificate/IMG_20260531_161317.jpg')">
+                <img src="./Achievement Certificate/IMG_20260531_161317.jpg" alt="Event" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-slate-950/70 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center p-2 text-center text-[10px]">Technical Quiz</div>
+            </div>
+            <div class="glass aspect-[3/4] relative overflow-hidden group rounded-xl cursor-pointer hover:scale-[1.02] transition-all" onclick="openLightbox('./Achievement Certificate/IMG_20260531_161338.jpg')">
+                <img src="./Achievement Certificate/IMG_20260531_161338.jpg" alt="Event" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-slate-950/70 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center p-2 text-center text-[10px]">Speaker Presenter</div>
+            </div>
+            <div class="glass aspect-[3/4] relative overflow-hidden group rounded-xl cursor-pointer hover:scale-[1.02] transition-all" onclick="openLightbox('./Achievement Certificate/IMG_20260531_161352.jpg')">
+                <img src="./Achievement Certificate/IMG_20260531_161352.jpg" alt="Event" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-slate-950/70 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center p-2 text-center text-[10px]">National Level Conference</div>
+            </div>
+            <div class="glass aspect-[3/4] relative overflow-hidden group rounded-xl cursor-pointer hover:scale-[1.02] transition-all" onclick="openLightbox('./Achievement Certificate/IMG_20260531_161406.jpg')">
+                <img src="./Achievement Certificate/IMG_20260531_161406.jpg" alt="Event" class="w-full h-full object-cover">
+                <div class="absolute inset-0 bg-slate-950/70 opacity-0 group-hover:opacity-100 transition-all flex items-center justify-center p-2 text-center text-[10px]">Biomedical Training</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Projects Section -->
+    <section id="projects" class="py-24 bg-slate-950/40 relative z-10 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-xs font-mono tracking-widest text-cyan uppercase block mb-2">06 — Projects</span>
+                <h2 class="text-3xl md:text-4xl font-display font-bold">Built with <span class="text-cyan">Purpose</span></h2>
+                <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-cyan-500 to-transparent mx-auto mt-6"></div>
+            </div>
+
+            <!-- Cards Grid -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                <!-- Project 1 -->
+                <div class="project-card glass p-6 rounded-2xl flex flex-col" onmousemove="tiltCard(event)" onmouseleave="resetTilt(event)">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-4 bg-cyan-500/10 border border-cyan-500/30 text-cyan">
+                        🩺
+                    </div>
+                    <h3 class="font-display font-semibold text-white/90 text-sm mb-2 leading-snug min-h-[2.5rem]">Smart AI-Powered Stethoscope</h3>
+                    <p class="text-white/50 text-xs leading-relaxed mb-4 flex-grow">An AI-driven digital stethoscope integrating machine learning classification algorithms to analyze heart sounds and detect murmurs or anomalies in real time.</p>
+                    <div class="flex flex-wrap gap-1.5 mt-auto">
+                        <span class="px-2.5 py-0.5 rounded text-[8px] font-bold tracking-wider uppercase bg-cyan-500/10 border border-cyan-500/25 text-cyan">AI</span>
+                        <span class="px-2.5 py-0.5 rounded text-[8px] font-bold tracking-wider uppercase bg-emerald-500/10 border border-emerald-500/25 text-emerald-400">Biomedical</span>
+                    </div>
+                </div>
+
+                <!-- Project 2 -->
+                <div class="project-card glass p-6 rounded-2xl flex flex-col" onmousemove="tiltCard(event)" onmouseleave="resetTilt(event)">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-4 bg-yellow-500/10 border border-yellow-500/30 text-yellow-400">
+                        📖
+                    </div>
+                    <h3 class="font-display font-semibold text-white/90 text-sm mb-2 leading-snug min-h-[2.5rem]">Biomedical Internship Guide E-book</h3>
+                    <p class="text-white/50 text-xs leading-relaxed mb-4 flex-grow">Author of a comprehensive guide outlining internship pathways, diagnostic equipment protocols, and medical technology workflows for biomedical students.</p>
+                    <div class="flex flex-wrap gap-1.5 mt-auto">
+                        <span class="px-2.5 py-0.5 rounded text-[8px] font-bold tracking-wider uppercase bg-emerald-500/10 border border-emerald-500/25 text-emerald-400">Biomedical</span>
+                        <span class="px-2.5 py-0.5 rounded text-[8px] font-bold tracking-wider uppercase bg-pink-500/10 border border-pink-500/25 text-pink-400">Writing</span>
+                    </div>
+                </div>
+
+                <!-- Project 3 -->
+                <div class="project-card glass p-6 rounded-2xl flex flex-col" onmousemove="tiltCard(event)" onmouseleave="resetTilt(event)">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-4 bg-orange-500/10 border border-orange-500/30 text-orange-400">
+                        📊
+                    </div>
+                    <h3 class="font-display font-semibold text-white/90 text-sm mb-2 leading-snug min-h-[2.5rem]">AI & Smart Wearables Presentation</h3>
+                    <p class="text-white/50 text-xs leading-relaxed mb-4 flex-grow">Delivered an in-depth technical analysis and presentation on the integration of neural networks in clinical-grade smart wearables and physiological monitoring.</p>
+                    <div class="flex flex-wrap gap-1.5 mt-auto">
+                        <span class="px-2.5 py-0.5 rounded text-[8px] font-bold tracking-wider uppercase bg-cyan-500/10 border border-cyan-500/25 text-cyan">AI</span>
+                        <span class="px-2.5 py-0.5 rounded text-[8px] font-bold tracking-wider uppercase bg-orange-500/10 border border-orange-500/25 text-orange-400">Wearables</span>
+                    </div>
+                </div>
+
+                <!-- Project 4 -->
+                <div class="project-card glass p-6 rounded-2xl flex flex-col" onmousemove="tiltCard(event)" onmouseleave="resetTilt(event)">
+                    <div class="w-12 h-12 rounded-xl flex items-center justify-center text-xl mb-4 bg-purple-500/10 border border-purple-500/30 text-purple-400">
+                        😴
+                    </div>
+                    <h3 class="font-display font-semibold text-white/90 text-sm mb-2 leading-snug min-h-[2.5rem]">Drowsiness Detection System</h3>
+                    <p class="text-white/50 text-xs leading-relaxed mb-4 flex-grow">Arduino driver sleepiness detection warning interface utilizing OpenCV computer vision and alert triggers to prevent accidents.</p>
+                    <div class="flex flex-wrap gap-1.5 mt-auto">
+                        <span class="px-2.5 py-0.5 rounded text-[8px] font-bold tracking-wider uppercase bg-cyan-500/10 border border-cyan-500/25 text-cyan">AI</span>
+                        <span class="px-2.5 py-0.5 rounded text-[8px] font-bold tracking-wider uppercase bg-purple-500/10 border border-purple-500/25 text-purple-400">Embedded</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Achievements Timelines Section -->
+    <section id="achievements" class="py-24 relative z-10 px-6 max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <span class="text-xs font-mono tracking-widest text-cyan uppercase block mb-2">07 — Achievements</span>
+            <h2 class="text-3xl md:text-4xl font-display font-bold">Academic & <span class="text-purple-400">Leadership Roles</span></h2>
+            <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-purple-500 to-transparent mx-auto mt-6"></div>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+            <!-- Ach 1 -->
+            <div class="glass p-6 md:p-8 rounded-2xl border border-white/5 flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan text-xl flex items-center justify-center flex-shrink-0">🎙️</div>
+                <div>
+                    <span class="text-[9px] font-bold uppercase tracking-wider text-cyan block mb-1 font-mono">Speaker Forum</span>
+                    <h3 class="font-bold text-sm text-white font-display mb-1.5">AI & Smart Wearables Technical Seminar</h3>
+                    <p class="text-white/50 text-[11px] leading-relaxed">Presented technical review on integrating deep learning algorithms into wristband physiology monitoring devices.</p>
+                </div>
+            </div>
+
+            <!-- Ach 2 -->
+            <div class="glass p-6 md:p-8 rounded-2xl border border-white/5 flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/30 text-purple-400 text-xl flex items-center justify-center flex-shrink-0">🏆</div>
+                <div>
+                    <span class="text-[9px] font-bold uppercase tracking-wider text-purple-400 block mb-1 font-mono">Technical Symposiums</span>
+                    <h3 class="font-bold text-sm text-white font-display mb-1.5">National Level Symposium</h3>
+                    <p class="text-white/50 text-[11px] leading-relaxed">Presented the prototype design for AI digital stethoscope Murmur classifier to biomedical experts.</p>
+                </div>
+            </div>
+
+            <!-- Ach 3 -->
+            <div class="glass p-6 md:p-8 rounded-2xl border border-white/5 flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-orange-500/10 border border-orange-500/30 text-orange-400 text-xl flex items-center justify-center flex-shrink-0">⚙️</div>
+                <div>
+                    <span class="text-[9px] font-bold uppercase tracking-wider text-orange-400 block mb-1 font-mono">Workshops</span>
+                    <h3 class="font-bold text-sm text-white font-display mb-1.5">Biomedical Instrumentation & Biosensors</h3>
+                    <p class="text-white/50 text-[11px] leading-relaxed">Completed advanced physical hardware training on diagnostic sensor metrics and telemetry calibration.</p>
+                </div>
+            </div>
+
+            <!-- Ach 4 -->
+            <div class="glass p-6 md:p-8 rounded-2xl border border-white/5 flex items-start gap-4">
+                <div class="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-400 text-xl flex items-center justify-center flex-shrink-0">🤝</div>
+                <div>
+                    <span class="text-[9px] font-bold uppercase tracking-wider text-emerald-400 block mb-1 font-mono">Leadership</span>
+                    <h3 class="font-bold text-sm text-white font-display mb-1.5">Student Biomedical Forum Coordinator</h3>
+                    <p class="text-white/50 text-[11px] leading-relaxed">Lead the organization of technical student quizzes, coding seminars, and symposium coordinate roles.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Resume Section -->
+    <section id="resume" class="py-24 bg-slate-950/40 relative z-10 px-6">
+        <div class="max-w-7xl mx-auto">
+            <div class="text-center mb-16">
+                <span class="text-xs font-mono tracking-widest text-cyan uppercase block mb-2">08 — Curriculum Vitae</span>
+                <h2 class="text-3xl md:text-4xl font-display font-bold">ATS-Friendly <span class="text-cyan">Resume</span></h2>
+                <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-cyan-500 to-transparent mx-auto mt-6"></div>
+            </div>
+
+            <!-- Resume Preview Box -->
+            <div class="glass-strong max-w-4xl mx-auto rounded-3xl p-8 md:p-12">
+                <div class="border-b border-white/10 pb-6 mb-8 flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
+                    <div>
+                        <h3 class="text-2xl font-bold font-display tracking-tight text-white mb-1">VISHNU PRIYA S</h3>
+                        <p class="text-xs font-mono tracking-wider text-cyan uppercase">Biomedical Engineering Student | AI Healthcare Innovator</p>
+                    </div>
+                    <a href="./Vishnu_Priya_Resume.pdf" download class="px-6 py-3 rounded-full text-xs md:text-sm font-bold text-slate-950 bg-gradient-to-r from-cyan-400 to-teal-400 hover:scale-102 shadow-lg shadow-cyan-500/20 transition-all flex items-center gap-2">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg>
+                        Download PDF Resume
+                    </a>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <!-- Column 1 -->
+                    <div class="lg:col-span-1 space-y-6 lg:border-r lg:border-white/10 lg:pr-8">
+                        <div>
+                            <h4 class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-3 font-mono">Contact Info</h4>
+                            <p class="text-xs text-white/70 leading-relaxed">
+                                <strong>Email:</strong><br><a href="mailto:vishnupriya.24bme@sonatech.ac.in" class="text-cyan hover:underline">vishnupriya.24bme@sonatech.ac.in</a><br><br>
+                                <strong>LinkedIn:</strong><br><a href="https://www.linkedin.com/in/vishnu-priya-01372931a" target="_blank" class="text-cyan hover:underline">linkedin.com/in/vishnu-priya...</a><br><br>
+                                <strong>GitHub:</strong><br><a href="https://github.com/vishnu-priya18" target="_blank" class="text-cyan hover:underline">github.com/vishnu-priya18</a><br><br>
+                                <strong>Location:</strong><br>Salem, Tamil Nadu, India
+                            </p>
+                        </div>
+                        <div>
+                            <h4 class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-3 font-mono">Education Details</h4>
+                            <div class="space-y-3 text-xs text-white/70">
+                                <div>
+                                    <strong>B.E. Biomedical Eng.</strong><br>Sona College of Technology<br><span class="text-white/40 font-mono">2024 – 2028 | Salem, TN</span>
+                                </div>
+                                <div>
+                                    <strong>12th Grade (HSC)</strong><br>Saraswati Matric School<br><span class="text-white/40 font-mono">Score: 74.6%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Column 2 & 3 -->
+                    <div class="lg:col-span-2 space-y-6">
+                        <div>
+                            <h4 class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-2 font-mono">Career Objective</h4>
+                            <p class="text-xs leading-relaxed text-white/70">
+                                Dedicated and analytical Biomedical Engineering student at Sona College of Technology, seeking to integrate cutting-edge technologies like Artificial Intelligence (AI) and Internet of Things (IoT) with clinical medicine. Passionate about building smart medical diagnostics, wearables, and instrumentation systems.
+                            </p>
+                        </div>
+                        <div>
+                            <h4 class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-2 font-mono">Selected Experience</h4>
+                            <div class="border-l-2 border-cyan-500/30 pl-4 text-xs">
+                                <div class="flex justify-between flex-wrap font-bold text-white mb-1">
+                                    <span>Healthcare Technology Intern</span>
+                                    <span class="text-cyan">Medsby</span>
+                                </div>
+                                <p class="text-white/50 mb-2">Gained practical diagnostics and physiological telemetry sensor validation.</p>
+                            </div>
+                        </div>
+                        <div>
+                            <h4 class="text-[10px] font-bold uppercase tracking-wider text-white/40 mb-2 font-mono">NPTEL Credentials</h4>
+                            <p class="text-xs text-white/70">
+                                ✓ <strong>Design Thinking</strong> — Silver + Elite (78% score)<br>
+                                ✓ <strong>Cardiovascular Mechanics</strong> — Elite (68% score)
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-24 relative z-10 px-6 max-w-7xl mx-auto">
+        <div class="text-center mb-16">
+            <span class="text-xs font-mono tracking-widest text-cyan uppercase block mb-2">09 — Contact Section</span>
+            <h2 class="text-3xl md:text-4xl font-display font-bold">Start a <span class="text-orange-400">Conversation</span></h2>
+            <div class="w-24 h-0.5 bg-gradient-to-r from-transparent via-cyan-500 to-transparent mx-auto mt-6"></div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-12 gap-8 max-w-5xl mx-auto">
+            <!-- Left Info column -->
+            <div class="lg:col-span-5 space-y-4">
+                <!-- Email -->
+                <a href="mailto:vishnupriya.24bme@sonatech.ac.in" class="glass p-5 rounded-2xl flex items-center gap-4 border border-white/5 hover:border-cyan-500/20 hover:scale-[1.01] transition-all block">
+                    <div class="w-10 h-10 rounded-xl bg-cyan-500/10 border border-cyan-500/30 text-cyan flex items-center justify-center text-lg flex-shrink-0">📧</div>
+                    <div>
+                        <span class="text-[9px] uppercase tracking-wider text-white/40 block font-mono">Email</span>
+                        <span class="text-xs md:text-sm font-semibold text-white/80">vishnupriya.24bme@sonatech.ac.in</span>
+                    </div>
+                </a>
+
+                <!-- LinkedIn -->
+                <a href="https://www.linkedin.com/in/vishnu-priya-01372931a" target="_blank" class="glass p-5 rounded-2xl flex items-center gap-4 border border-white/5 hover:border-cyan-500/20 hover:scale-[1.01] transition-all block">
+                    <div class="w-10 h-10 rounded-xl bg-blue-500/10 border border-blue-500/30 text-blue-400 flex items-center justify-center text-lg flex-shrink-0">🔗</div>
+                    <div>
+                        <span class="text-[9px] uppercase tracking-wider text-white/40 block font-mono">LinkedIn</span>
+                        <span class="text-xs md:text-sm font-semibold text-white/80">vishnu-priya-01372931a</span>
+                    </div>
+                </a>
+
+                <!-- GitHub -->
+                <a href="https://github.com/vishnu-priya18" target="_blank" class="glass p-5 rounded-2xl flex items-center gap-4 border border-white/5 hover:border-cyan-500/20 hover:scale-[1.01] transition-all block">
+                    <div class="w-10 h-10 rounded-xl bg-purple-500/10 border border-purple-500/30 text-purple-400 flex items-center justify-center text-lg flex-shrink-0">💻</div>
+                    <div>
+                        <span class="text-[9px] uppercase tracking-wider text-white/40 block font-mono">GitHub</span>
+                        <span class="text-xs md:text-sm font-semibold text-white/80">vishnu-priya18</span>
+                    </div>
+                </a>
+
+                <!-- Instagram -->
+                <a href="https://instagram.com/vishnupriya_18" target="_blank" class="glass p-5 rounded-2xl flex items-center gap-4 border border-white/5 hover:border-cyan-500/20 hover:scale-[1.01] transition-all block">
+                    <div class="w-10 h-10 rounded-xl bg-pink-500/10 border border-pink-500/30 text-pink-400 flex items-center justify-center text-lg flex-shrink-0">📷</div>
+                    <div>
+                        <span class="text-[9px] uppercase tracking-wider text-white/40 block font-mono">Instagram</span>
+                        <span class="text-xs md:text-sm font-semibold text-white/80">vishnupriya_18</span>
+                    </div>
+                </a>
+            </div>
+
+            <!-- Right form column -->
+            <div class="lg:col-span-7">
+                <div class="glass-strong p-8 rounded-3xl border border-white/10">
+                    <h3 class="font-display font-bold text-white text-lg mb-6">Send a Message</h3>
+                    <form onsubmit="handleContactSubmit(event)" class="space-y-4">
+                        <div>
+                            <label class="text-[9px] uppercase tracking-wider text-white/40 block mb-1.5 font-mono">Full Name</label>
+                            <input type="text" required id="contact-name" class="w-full bg-white/5 border border-white/10 focus:border-cyan/50 focus:bg-white/10 rounded-xl px-4 py-3 text-xs md:text-sm text-white outline-none transition-all" placeholder="Enter name">
+                        </div>
+                        <div>
+                            <label class="text-[9px] uppercase tracking-wider text-white/40 block mb-1.5 font-mono">Email Address</label>
+                            <input type="email" required id="contact-email" class="w-full bg-white/5 border border-white/10 focus:border-cyan/50 focus:bg-white/10 rounded-xl px-4 py-3 text-xs md:text-sm text-white outline-none transition-all" placeholder="Enter email">
+                        </div>
+                        <div>
+                            <label class="text-[9px] uppercase tracking-wider text-white/40 block mb-1.5 font-mono">Message</label>
+                            <textarea required rows="4" id="contact-msg" class="w-full bg-white/5 border border-white/10 focus:border-cyan/50 focus:bg-white/10 rounded-xl px-4 py-3 text-xs md:text-sm text-white outline-none transition-all resize-none" placeholder="Describe query..."></textarea>
+                        </div>
+                        <button type="submit" class="w-full py-3 rounded-xl font-bold text-slate-950 bg-gradient-to-r from-cyan-400 to-teal-400 hover:scale-101 shadow shadow-cyan-500/10 transition-all text-xs md:text-sm">
+                            Send Message
+                        </button>
+                    </form>
+                    <div id="form-status" class="hidden mt-4 p-3 rounded-xl text-xs text-center border font-semibold font-display"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-slate-950 py-12 border-t border-white/5 text-center text-xs text-white/30 relative z-10">
+        <div class="max-w-7xl mx-auto px-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+            <div class="flex items-center gap-3">
+                <div class="w-8 h-8 rounded-full flex items-center justify-center text-xs font-bold text-white bg-gradient-to-br from-cyan-500 to-slate-900">
+                    VP
+                </div>
+                <span>Vishnu Priya · Sona College of Technology</span>
+            </div>
+            <div class="flex gap-4 font-mono text-[10px]">
+                <a href="#about" class="hover:text-white transition-colors">About</a>
+                <a href="#projects" class="hover:text-white transition-colors">Projects</a>
+                <a href="#resume" class="hover:text-white transition-colors">Resume</a>
+                <a href="#contact" class="hover:text-white transition-colors">Contact</a>
+            </div>
+            <p class="font-mono text-[10px]">© 2024–2028 Vishnu Priya. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <!-- Fullscreen Lightbox Modal -->
+    <div id="lightbox" class="fixed inset-0 z-[1000] hidden flex items-center justify-center lightbox-modal p-4" onclick="closeLightbox()">
+        <button class="absolute top-6 right-6 w-10 h-10 rounded-full flex items-center justify-center text-white/70 hover:text-white border border-white/20 bg-white/5 text-lg" onclick="closeLightbox()">✕</button>
+        <div class="max-w-[90vw] max-h-[85vh] relative" onclick="event.stopPropagation()">
+            <img id="lightbox-img" src="" alt="Fullscreen Certificate" class="rounded-xl max-w-full max-h-[85vh] object-contain shadow-2xl shadow-black">
+        </div>
+    </div>
+
+    <!-- Scripting for Canvas Waves, Tabs, Lights, Menu -->
+    <script>
+        // Mobile menu toggle
+        const menuBtn = document.getElementById('menu-btn');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const bar1 = document.getElementById('bar1');
+        const bar2 = document.getElementById('bar2');
+        const bar3 = document.getElementById('bar3');
+
+        menuBtn.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+            bar1.classList.toggle('rotate-45');
+            bar1.classList.toggle('translate-y-2');
+            bar2.classList.toggle('opacity-0');
+            bar3.classList.toggle('-rotate-45');
+            bar3.classList.toggle('-translate-y-2');
+        });
+
+        // Close menu on nav click
+        document.querySelectorAll('#mobile-menu a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+                bar1.classList.remove('rotate-45', 'translate-y-2');
+                bar2.classList.remove('opacity-0');
+                bar3.classList.remove('-rotate-45', '-translate-y-2');
+            });
+        });
+
+        // Navbar scrolled background
+        window.addEventListener('scroll', () => {
+            const nav = document.getElementById('navbar');
+            if (window.scrollY > 50) {
+                nav.classList.add('bg-slate-950/80', 'backdrop-blur-xl', 'border-b', 'border-white/5', 'py-3');
+                nav.classList.remove('py-5');
+            } else {
+                nav.classList.remove('bg-slate-950/80', 'backdrop-blur-xl', 'border-b', 'border-white/5', 'py-3');
+                nav.classList.add('py-5');
+            }
+        });
+
+        // Certificate tab switcher
+        function switchTab(tabId) {
+            // Remove active classes
+            document.querySelectorAll('#tabs button').forEach(btn => btn.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(content => content.classList.add('hidden'));
+
+            // Find clicked button index
+            let targetBtn;
+            if (tabId === 'nptel') targetBtn = document.querySelectorAll('#tabs button')[0];
+            else if (tabId === 'course') targetBtn = document.querySelectorAll('#tabs button')[1];
+            else targetBtn = document.querySelectorAll('#tabs button')[2];
+
+            targetBtn.classList.add('active');
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+        }
+
+        // Image lightbox handlers
+        function openLightbox(src) {
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightbox-img');
+            lightboxImg.src = src;
+            lightbox.classList.remove('hidden');
+        }
+
+        function closeLightbox() {
+            document.getElementById('lightbox').classList.add('hidden');
+        }
+
+        // Contact form simulation
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            const status = document.getElementById('form-status');
+            status.classList.remove('hidden', 'bg-red-500/10', 'border-red-500/20', 'text-red-400');
+            status.classList.add('bg-emerald-500/10', 'border-emerald-500/20', 'text-emerald-400', 'border');
+            status.textContent = 'Sending your message...';
+
+            setTimeout(() => {
+                status.textContent = 'Thank you! Your message has been sent successfully.';
+                document.getElementById('contact-name').value = '';
+                document.getElementById('contact-email').value = '';
+                document.getElementById('contact-msg').value = '';
+            }, 1200);
+        }
+
+        // 3D Tilt Hover card effect
+        function tiltCard(e) {
+            const card = e.currentTarget;
+            const rect = card.getBoundingClientRect();
+            const x = (e.clientX - rect.left) / rect.width - 0.5;
+            const y = (e.clientY - rect.top) / rect.height - 0.5;
+            card.style.transform = `perspective(1000px) rotateY(${x * 12}deg) rotateX(${-y * 12}deg) translateZ(5px)`;
+        }
+
+        function resetTilt(e) {
+            const card = e.currentTarget;
+            card.style.transform = 'perspective(1000px) rotateY(0deg) rotateX(0deg) translateZ(0px)';
+        }
+
+        // Particle canvas network effect
+        const canvas = document.getElementById('particle-canvas');
+        const ctx = canvas.getContext('2d');
+        let particles = [];
+        const count = 75;
+
+        function resizeCanvas() {
+            canvas.width = window.innerWidth;
+            canvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        class Particle {
+            constructor() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.vx = (Math.random() - 0.5) * 0.4;
+                this.vy = (Math.random() - 0.5) * 0.4;
+                this.radius = Math.random() * 2 + 1;
+            }
+
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x < 0 || this.x > canvas.width) this.vx *= -1;
+                if (this.y < 0 || this.y > canvas.height) this.vy *= -1;
+            }
+
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(0, 212, 255, 0.4)';
+                ctx.fill();
+            }
+        }
+
+        for (let i = 0; i < count; i++) {
+            particles.push(new Particle());
+        }
+
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            particles.forEach(p => {
+                p.update();
+                p.draw();
+            });
+
+            // Draw connecting lines
+            for (let i = 0; i < count; i++) {
+                for (let j = i + 1; j < count; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+
+                    if (dist < 100) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(0, 212, 255, ${0.12 * (1 - dist / 100)})`;
+                        ctx.lineWidth = 0.8;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animate);
+        }
+        animate();
+
+        // Video elements and functions
+        const heroVideo = document.getElementById('hero-video');
+        const playIcon = document.getElementById('play-icon');
+        const pauseIcon = document.getElementById('pause-icon');
+        const muteIcon = document.getElementById('mute-icon');
+        const unmuteIcon = document.getElementById('unmute-icon');
+        const videoMuteBtn = document.getElementById('video-mute-btn');
+
+        function togglePlayHeroVideo() {
+            if (heroVideo && playIcon && pauseIcon) {
+                if (heroVideo.paused) {
+                    heroVideo.play().then(() => {
+                        playIcon.classList.add('hidden');
+                        pauseIcon.classList.remove('hidden');
+                    }).catch(e => console.error(e));
+                } else {
+                    heroVideo.pause();
+                    playIcon.classList.remove('hidden');
+                    pauseIcon.classList.add('hidden');
+                }
+            }
+        }
+
+        function toggleMuteHeroVideo() {
+            if (heroVideo) {
+                heroVideo.muted = !heroVideo.muted;
+                if (!heroVideo.muted) {
+                    heroVideo.volume = 1.0; // Ensure 100% volume
+                }
+                syncMuteButtonsState();
+            }
+        }
+
+        function syncMuteButtonsState() {
+            if (heroVideo && muteIcon && unmuteIcon && videoMuteBtn) {
+                if (heroVideo.muted || heroVideo.volume === 0) {
+                    muteIcon.classList.remove('hidden');
+                    unmuteIcon.classList.add('hidden');
+                    videoMuteBtn.classList.add('animate-pulse'); // Pulse to grab attention when muted
+                } else {
+                    muteIcon.classList.add('hidden');
+                    unmuteIcon.classList.remove('hidden');
+                    videoMuteBtn.classList.remove('animate-pulse');
+                }
+            }
+        }
+
+        // 2-second delay unmuted autoplay, plays only once
+        if (heroVideo) {
+            heroVideo.muted = false; // Start unmuted
+            heroVideo.volume = 1.0;  // Explicitly set max volume
+            heroVideo.loop = false;  // Play only once
+            
+            // Sync initial state
+            syncMuteButtonsState();
+
+            setTimeout(() => {
+                heroVideo.play().then(() => {
+                    // Played successfully unmuted
+                    console.log("Unmuted autoplay succeeded.");
+                    syncMuteButtonsState();
+                }).catch(err => {
+                    console.log("Autoplay unmuted blocked, falling back to muted:", err);
+                    heroVideo.muted = true;
+                    syncMuteButtonsState();
+                    
+                    // Try playing muted
+                    heroVideo.play().catch(e => console.error("Muted play also blocked:", e));
+                });
+            }, 2000);
+
+            // Automatic unmute on first document-level user gesture (click, key, touch)
+            const unmuteOnGesture = () => {
+                if (heroVideo.muted) {
+                    heroVideo.muted = false;
+                    heroVideo.volume = 1.0;
+                    syncMuteButtonsState();
+                    if (heroVideo.paused) {
+                        heroVideo.play().catch(e => console.error(e));
+                    }
+                }
+                // Cleanup listeners after first execution
+                document.removeEventListener('click', unmuteOnGesture);
+                document.removeEventListener('keydown', unmuteOnGesture);
+                document.removeEventListener('touchstart', unmuteOnGesture);
+            };
+
+            document.addEventListener('click', unmuteOnGesture);
+            document.addEventListener('keydown', unmuteOnGesture);
+            document.addEventListener('touchstart', unmuteOnGesture);
+
+            // Listen to video events to keep UI buttons in sync
+            heroVideo.addEventListener('volumechange', syncMuteButtonsState);
+            
+            heroVideo.addEventListener('play', () => {
+                if (playIcon && pauseIcon) {
+                    playIcon.classList.add('hidden');
+                    pauseIcon.classList.remove('hidden');
+                }
+            });
+            
+            heroVideo.addEventListener('pause', () => {
+                if (playIcon && pauseIcon) {
+                    playIcon.classList.remove('hidden');
+                    pauseIcon.classList.add('hidden');
+                }
+            });
+            
+            heroVideo.addEventListener('ended', () => {
+                if (playIcon && pauseIcon) {
+                    playIcon.classList.remove('hidden');
+                    pauseIcon.classList.add('hidden');
+                }
+            });
+        }
+    </script>
+</body>
+</html>
